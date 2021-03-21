@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+ 
+# Raw data files
+data/*
+
+# secrets/settings files
+settings.ini
