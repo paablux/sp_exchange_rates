@@ -43,5 +43,5 @@ class RequestInterface():
         self.prepare_request(symbol)
         api_response = self.request_exchange_api()
         self.check_response(api_response)
-        return api_response
+        return api_response.json()
         

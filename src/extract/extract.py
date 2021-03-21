@@ -24,5 +24,5 @@ class Extract():
         for symbol in SYMBOLS:
             print(f'extracting {symbol}')
             response = self.http_request_interface.run_api_symbol(symbol)
-            self.save_raw_file(response.json(), symbol=symbol)
+            self.save_raw_file(response, symbol=symbol)
             print(f'saved json raw file for {symbol} exchange rates')

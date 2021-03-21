@@ -58,9 +58,6 @@ def prepare_data_csv(data):
 
 def convert_to_csv(columns, rows):
     epoch_time = int(datetime.now().timestamp())
-    print('hi')
-    from time import sleep
-    sleep(2)
     with open(f'data/extracted/extracted_exchanges_{epoch_time}.csv', 'w') as f: 
         write = writer(f)
         write.writerow(columns)
