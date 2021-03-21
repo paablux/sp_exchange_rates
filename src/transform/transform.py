@@ -4,14 +4,13 @@ from datetime import datetime
 from csv import writer
 from json import loads
 
-RAW_DATA_PATH = "data/raw"
+RAW_DATA_PATH = "data/raw/"
 
 def get_api_raw_file_names():
     files = list()
     for item in listdir(RAW_DATA_PATH):
         file_name = join(RAW_DATA_PATH, item)
-        if isfile(file_name) and "raw_exchange" in file_name:
-            files.append(file_name)
+        files.append(file_name)
     return files
 
 def read_extracted_files(files):
@@ -30,7 +29,7 @@ def parse_file(data:dict):
         item_parsed = dict()
         item_parsed['date'] = datetime.strptime(date_str, "%Y-%m-%d")
         item_parsed['base_currency'] = symbol
-        item_parsed = {**item_parsed, values}
+        item_parsed = {**item_parsed, **values}
         parsed_data.append(item_parsed)
     return parsed_data
 
@@ -42,20 +41,26 @@ def prepare_data_csv(data):
     # create a list of lists from the list of dictionaries in the parsed data
     if not data:
         raise Exception('Empty data')
-    csv_columns = list()
-    rows = [csv_columns]
-    for item in data:
-        row = tuple()
-        for column in csv_columns:
-            if column != 'date':
-                row += (item[column],)
-            else:
-                row += (item[column].strf('%d/%m/%Y'),)
-        rows.append(row)
-    return csv_columns, rows
+    csv_data = list()
+    for currency_item in data:
+        csv_columns = list(currency_item[0].keys())
+        rows = list()
+        for item in currency_item:
+            row = tuple()
+            for column in csv_columns:
+                if column != 'date':
+                    row += (item.get(column, None),)
+                else:
+                    row += (item[column].strftime('%d/%m/%Y'),)
+            rows.append(row)
+        csv_data.append([csv_columns, rows])
+    return csv_data
 
 def convert_to_csv(columns, rows):
     epoch_time = int(datetime.now().timestamp())
+    print('hi')
+    from time import sleep
+    sleep(2)
     with open(f'data/extracted/extracted_exchanges_{epoch_time}.csv', 'w') as f: 
         write = writer(f)
         write.writerow(columns)
@@ -64,8 +69,10 @@ def convert_to_csv(columns, rows):
 def run():
     file_names = get_api_raw_file_names()
     raw_content = read_extracted_files(file_names)
-    csv_ready_data = prepare_data_csv(raw_content)
-    convert_to_csv(*csv_ready_data)
+    parsed_data = [parse_file(item) for item in raw_content]
+    csv_ready_data = prepare_data_csv(parsed_data)
+    for currency in csv_ready_data:
+        convert_to_csv(*currency)
 
     
 
