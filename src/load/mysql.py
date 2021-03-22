@@ -6,11 +6,11 @@ from pymysql import connect
 from pymysql.cursors import DictCursor
 from pymysql.err import IntegrityError, InternalError, OperationalError
 
-from src.utils.settings import read_settings
+from utils.settings import read_settings
 
 
 class BaseDB():
-    def __init__(self, uuid, company_id):
+    def __init__(self):
         self.settings = read_settings()
         connection = connect(
             host=self.settings['mysql_host'],
@@ -30,7 +30,9 @@ class BaseDB():
             try:
                 cursor.execute(query, args)
             except Exception as e:
-                self.logger.error('Error in bulk inserts')
+                print(args)
+                print(e)
+                print('Error in insert')
                 self.conn.rollback()
                 self.close()
                 raise e
@@ -66,7 +68,9 @@ class BaseDB():
             self.rollback()
             self.close()
     
-    def load(data):
+    def load(self, data):
+        base_sql = 'INSERT INTO `exchange_rates` (base_currency, to_exchange_currency, exchange_rate, date) VALUES (%s, %s, %s, %s);'
         for row in data:
-            sql = self.generate_sql_insert('exchange_rates', row)
-            self.execute(sql)
+            if row['exchange_rate']:
+                params = [row['base_currency'], row['to_exchange_currency'], row['exchange_rate'], row['date']]
+                self.execute(base_sql, params)
