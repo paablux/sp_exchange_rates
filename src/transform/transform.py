@@ -69,12 +69,14 @@ def convert_to_csv(columns, rows):
         write.writerows(rows)
 
 def run():
+    print("CSV transform started")
     file_names = get_api_raw_file_names()
     raw_content = read_extracted_files(file_names)
     parsed_data = [parse_file(item) for item in raw_content]
     csv_ready_data = prepare_data_csv(parsed_data)
     for data in csv_ready_data:
         convert_to_csv(*data)
+    print('Parsed & csv saved')
 
     
 

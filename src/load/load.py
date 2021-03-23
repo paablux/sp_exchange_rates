@@ -28,7 +28,6 @@ class Loader():
         files = list()
         for item in listdir(TRANSFORMED_DATA_PATH):
             file_name = join(TRANSFORMED_DATA_PATH, item)
-            print(file_name[0:-1:3])
             if file_name[::-1][3::-1] == '.csv':
                 files.append(file_name)
         return files   
@@ -50,9 +49,12 @@ class Loader():
         return dataset
 
     def run(self):
+        print('starting loader to DB')
         file_names = self.get_transformed_file_names()
         for file_name in file_names:
             data = self.load_csv(file_name)
             to_db = self.prepare_db(data)
             with self.sql_client() as db:
                 db.load(to_db)
+            print(f'{file_name} load finished')
+        print("SUCCESS")
