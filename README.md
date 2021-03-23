@@ -16,7 +16,7 @@ This repo is a basic ETL mini project. The main ideas are:
 [api_auth]
 token = secret
 [database]
-mysql_host = 127.0.01
+mysql_host = 127.0.0.1
 mysql_password = secret
 mysql_port = 3306
 mysql_user = root
