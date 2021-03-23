@@ -20,11 +20,13 @@ def test_order_items_by_date():
     assert expected == result
 
 def test_prepare_data_csv():
-    input_data = [{'date':datetime(2021,2,2), 'currency':'GBP'},{'date':datetime(2021,2,12), 'currency':'GBP'},{'date':datetime(2021,6,2), 'currency':'GBP'}]
-    expected = [(['date', 'currency'], [['02/02/2021', 'GBP'],['02/12/2021', 'GBP'],['02/06/2021', 'GBP']])]
+    input_data = [[{'date':datetime(2021,2,2), 'currency':'GBP'},{'date':datetime(2021,2,12), 'currency':'GBP'},{'date':datetime(2021,6,2), 'currency':'GBP'}]]
+    expected = [[['date', 'currency'], [['02/02/2021', 'GBP'],['12/02/2021', 'GBP'],['02/06/2021', 'GBP']]]]
+    result = prepare_data_csv(input_data)
     assert expected == result
 
 def test_parse_file():
-    input_data = {'base': 'USD', 'rates': {'2021-02-12': {"USD": 1, "EUR": 0.82, "GBP": 0.75}, '2021-03-12': {"USD": 1, "EUR": 0.89, "GBP": 0.72}}]}
+    input_data = {'base': 'USD', 'rates': {'2021-02-12': {"USD": 1, "EUR": 0.82, "GBP": 0.75}, '2021-03-12': {"USD": 1, "EUR": 0.89, "GBP": 0.72}}}
     expected = [{'base_currency': 'USD', "USD": 1, "EUR": 0.82, "GBP": 0.75, 'date': datetime(2021,2,12)}, {'base_currency': 'USD', "USD": 1, "EUR": 0.89, "GBP": 0.72, 'date': datetime(2021,3,12)}]
+    result = parse_file(input_data)
     assert expected == result

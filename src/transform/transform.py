@@ -46,7 +46,7 @@ def prepare_data_csv(data):
         csv_columns = list(currency_item[0].keys())
         rows = list()
         for item in currency_item:
-            row = tuple()
+            row = list()
             for column in csv_columns:
                 if column != 'date':
                     row += (item.get(column, None),)

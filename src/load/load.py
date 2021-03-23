@@ -28,7 +28,9 @@ class Loader():
         files = list()
         for item in listdir(TRANSFORMED_DATA_PATH):
             file_name = join(TRANSFORMED_DATA_PATH, item)
-            files.append(file_name)
+            print(file_name[0:-1:3])
+            if file_name[::-1][3::-1] == '.csv':
+                files.append(file_name)
         return files   
 
     def prepare_db(self, data):

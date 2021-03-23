@@ -7,6 +7,7 @@ from .request_interface import RequestInterface
 
 
 SYMBOLS = ["USD", "GBP", "EUR"]
+RAW_PATH_SAVE = "data/raw"
 
 class Extract():
     def __init__(self):
@@ -14,8 +15,9 @@ class Extract():
         print('starting extractor..')
         self.http_request_interface = RequestInterface
     
-    def save_raw_file(self, data, symbol:str):            
-        with open(f"data/raw/raw_exchange_{symbol}.json", "w+") as f:
+    def save_raw_file(self, data, symbol:str): 
+        print(f"{RAW_PATH_SAVE}/raw_exchange_{symbol}.json")          
+        with open(f"{RAW_PATH_SAVE}/raw_exchange_{symbol}.json", "w+") as f:
             str_data = dumps(data)
             f.write(str_data)
     
