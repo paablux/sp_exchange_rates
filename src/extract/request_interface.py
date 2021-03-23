@@ -7,7 +7,7 @@ from utils.settings import read_settings
 BASE_URL = "https://api.exchangeratesapi.io/history"
 BASE_PARAMS = {"start_at": "2018-01-01", "end_at": "2021-01-01"}
 API_RATE = 60
-API_CALLS_PER_RATE = 1
+API_CALLS_PER_RATE = 5
 
 class RequestInterface():
     def __init__(self):
