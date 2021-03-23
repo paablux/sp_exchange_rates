@@ -4,6 +4,6 @@ from load.load import Loader
 # extractor = Extract()
 # extractor.run()
 
-# run()
-loader = Loader()
-loader.run()
+run()
+# loader = Loader()
+# loader.run()

@@ -35,7 +35,7 @@ def parse_file(data:dict):
 
 
 def order_items_by_date(data:list, is_desc:bool):
-    return sorted(data, key=lambda k: k['name'], reverse=is_desc)
+    return sorted(data, key=lambda k: k['date'], reverse=is_desc)
 
 def prepare_data_csv(data):
     # create a list of lists from the list of dictionaries in the parsed data
@@ -53,12 +53,17 @@ def prepare_data_csv(data):
                 else:
                     row += (item[column].strftime('%d/%m/%Y'),)
             rows.append(row)
-        csv_data.append([csv_columns, rows])
+        csv_data.append([csv_columns, rows, ])
     return csv_data
+    
+def find_base_currency(columns, rows):
+    sample = {key: value for key, value in zip(columns, rows[0])}
+    return sample['base_currency']
 
 def convert_to_csv(columns, rows):
+    currency = find_base_currency(columns, rows)
     epoch_time = int(datetime.now().timestamp())
-    with open(f'data/extracted/extracted_exchanges_{epoch_time}.csv', 'w') as f: 
+    with open(f'data/extracted/extracted_exchanges_{currency}.csv', 'w') as f: 
         write = writer(f)
         write.writerow(columns)
         write.writerows(rows)
@@ -68,8 +73,8 @@ def run():
     raw_content = read_extracted_files(file_names)
     parsed_data = [parse_file(item) for item in raw_content]
     csv_ready_data = prepare_data_csv(parsed_data)
-    for currency in csv_ready_data:
-        convert_to_csv(*currency)
+    for data in csv_ready_data:
+        convert_to_csv(*data)
 
     
 
