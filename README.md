@@ -13,7 +13,17 @@ This repo is a basic ETL mini project. The main ideas are:
 - [OPTIONAL]Execute some commands to create a fresh database schema and create the main table that we are going to work with `docker run --name sp-mysql -p 3306:3306 -h 127.0.0.1 -e MYSQL_ROOT_PASSWORD=root -d mysql:8`
 - Last but not least create a local settings file called `settings.ini` in the root directory. It has to look something like this:
 ```
-
+[api_auth]
+token = secret
+[database]
+mysql_host = 127.0.01
+mysql_password = secret
+mysql_port = 3306
+mysql_user = root
+mysql_database = secret
 ```
 ## Running the project
-- run the ETL with `python src/main.py` that will run all  the processed
+- run the ETL with `python src/main.py` that will run all  the processes 
+
+## Tests
+- Run them with `pytest --rootdir=src`
